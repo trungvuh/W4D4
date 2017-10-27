@@ -3,18 +3,17 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def current_user
-    return nil unless session[:session_token]
-    @current_user ||= User.find_by(session_token: session[:session_token])
+    return nil unless sessions[:session_token]
+    @current_user ||= User.find_by(session_token: sessions[:session_token])
   end
 
   def login!(user)
-    token = user.reset_session_token!
-    session[:session_token] = token
+    sessions[:session_token] = user.reset_session_token!
   end
 
   def logout!
     current_user.reset_session_token!
-    session[:session_token] = nil
+    sessions[:session_token] = nil
   end
 
   def login?
