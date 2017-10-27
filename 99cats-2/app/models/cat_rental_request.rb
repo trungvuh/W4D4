@@ -8,8 +8,14 @@ class CatRentalRequest < ApplicationRecord
   validates :status, inclusion: STATUS_STATES
   validate :start_must_come_before_end
   validate :does_not_overlap_approved_request
+  validates :user_id, presence: true
 
   belongs_to :cat
+
+  belongs_to :requester,
+    primary_key: :id,
+    foreign_key: :user_id,
+    class_name: :User
 
   after_initialize :assign_pending_status
 

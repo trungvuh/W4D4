@@ -8,6 +8,31 @@
     <%= javascript_include_tag 'application' %>
   </head>
 
+  <header>
+    <input
+      type="hidden"
+      name="authenticity_token"
+      value="<%= form_authenticity_token %>">
+    <%= button_to "Home", root_url, method: :get %>
+    <%= button_to "Request", new_cat_rental_request_url, method: :get %>
+    <br>
+    <% if login? %>
+      <%= "Welcome, #{current_user[:username]}! " %>
+      <%= button_to "Log out", session_url , method: :delete  %>
+
+      <!-- <form action="<%= session_url %>" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Log out">
+      </form> -->
+
+    <% else %>
+      <form action="<%= new_session_url %>" method="get">
+        <input type="submit"  value="Log in">
+      </form>
+      <%= button_to "Sign up", new_user_url, method: :get %>
+    <% end %>
+  </header>
+
   <body>
     <%= yield %>
   </body>
